@@ -1,7 +1,7 @@
 # attograd: A toy autograd framework
 This is not a production-grade framework. I built this framework to help me better understand low-level neural network internals.
 
-"Atto" is the [SI prefix](https://www.nist.gov/pml/owm/metric-si-prefixes#Prefixes) for 10<sup>-18</sup>, and is a nice play on the word "autograd". Attograd is smaller and less-featurful than the following frameworks, hence the smaller SI prefix:
+"Atto" is the [SI prefix](https://www.nist.gov/pml/owm/metric-si-prefixes#Prefixes) for 10<sup>-18</sup>, and is a nice play on the word "autograd". Attograd is smaller and less-featureful than the following frameworks, hence the smaller SI prefix:
 
 - https://github.com/tinygrad/tinygrad
 - https://github.com/karpathy/micrograd
@@ -23,5 +23,5 @@ uv sync --frozen
 ```
 
 ## Development
-- Add new packages with `uv add PACKGE-NAME`
+- Add new packages with `uv add PACKAGE-NAME`
 - Update the lockfile with `uv lock`
