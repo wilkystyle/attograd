@@ -18,3 +18,15 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build]
 dev-mode-dirs = ["src"]
+
+[dependency-groups]
+dev = [
+    "debugpy>=1.8.20",
+    "pytest>=9.0.2",
+]
+
+[tool.coverage.report]
+show_missing = true  # Indicate which lines of code are missing coverage
+
+[tool.coverage.run]
+omit = ["test_*"]
