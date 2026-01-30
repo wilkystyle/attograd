@@ -3,11 +3,11 @@ This is not a production-grade framework. I built this framework to help me bett
 
 "Atto" is the [SI prefix](https://www.nist.gov/pml/owm/metric-si-prefixes#Prefixes) for 10<sup>-18</sup>, and is a nice play on the word "autograd". Attograd is smaller and less-featureful than the following frameworks, hence the smaller SI prefix:
 
-- https://github.com/tinygrad/tinygrad
-- https://github.com/karpathy/micrograd
-- https://github.com/PABannier/nanograd
-- https://github.com/shubhamwagh/picograd
-- https://github.com/queelius/femtograd
+- [tinygrad/tinygrad](https://github.com/tinygrad/tinygrad)
+- [karpathy/micrograd](https://github.com/karpathy/micrograd)
+- [PABannier/nanograd](https://github.com/PABannier/nanograd)
+- [shubhamwagh/picograd](https://github.com/shubhamwagh/picograd)
+- [queelius/femtograd](https://github.com/queelius/femtograd)
 
 ## Prerequisites
 - [uv](https://docs.astral.sh/uv/getting-started/installation/)
