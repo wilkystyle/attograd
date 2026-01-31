@@ -103,10 +103,17 @@ class Node:
         return value * self**-1
 
     def relu(self):
-        return Node(
+        parent = Node(
             value=0 if self.value < 0 else self.value,
+            children=(self,),
             op="ReLU",
         )
+
+        def _backward():
+            self.grad += parent.grad * (parent.value > 0)
+
+        parent._backward = _backward
+        return parent
 
     def backward(self):
         nodes = []
