@@ -26,3 +26,8 @@ def test_karpathy_micrograd_readme():
     g += 10.0 / f
 
     assert g.value == 24.70408163265306
+
+    g.backward()
+
+    assert f"{a.grad:.4f}" == "138.8338"
+    assert f"{b.grad:.4f}" == "645.5773"
