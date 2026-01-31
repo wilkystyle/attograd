@@ -30,3 +30,27 @@ show_missing = true  # Indicate which lines of code are missing coverage
 
 [tool.coverage.run]
 omit = ["test_*"]
+
+[tool.ruff.lint]
+# Enable all `pydocstyle` rules, limiting to those that adhere to the
+# Google convention via `convention = "google"`, below.
+select = [
+  "F",    # Enable pyflakes
+  "D",    # Enable pydocstyle
+  "W",    # Enable pycodestyle warnings
+  "E",    # Enable pycodestyle errors
+  "C90",  # Enable mccabe (complexity) warnings
+  "N",    # Enable pep8 naming warnings
+  "B",    # Enable flake8 bugbear
+  "I",    # Enable isort warnings
+]
+
+extend-ignore = [
+  "E501",  # Ignore line length warnings.
+  "D202",  # Don't complain about blank line after docstring.
+  "D203",  # Do NOT require a line between `class` and the class docstring.
+  "D213",  # Multi-line summary should NOT start at the second line.
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
