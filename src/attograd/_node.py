@@ -1,39 +1,85 @@
 from __future__ import annotations
 
+from typing import Callable
+
 
 class Node:
-    def __init__(self, value, operation: str | None = None):
+    value: int | float
+    children: set[Node]
+    op: str | None
+    grad: float
+    _backward: Callable
+
+    def __init__(
+        self,
+        value: int | float,
+        children: tuple[Node, ...] = (),
+        op: str | None = None,
+    ):
         self.value = value
-        self.operation = operation
+        self.children = set(children)
+        self.op = op
+
+        self.grad = 0.0
+        self._backward = lambda: None
 
     def __str__(self):
-        op_string = f", op={self.operation}" if self.operation else ""
+        op_string = f", op={self.op}" if self.op else ""
         return f"<Node: value={self.value}{op_string}>"
 
     def __repr__(self):
         return str(self)
 
-    def __add__(self, value: Node | int | float):
-        to_add = value.value if isinstance(value, Node) else value
+    def __add__(self, other: Node | int | float):
+        other = other if isinstance(other, Node) else Node(other)
 
-        return Node(
-            value=self.value + to_add,
-            operation="+",
+        parent = Node(
+            value=self.value + other.value,
+            children=(self, other),
+            op="+",
         )
 
-    def __mul__(self, value: Node | int | float):
-        to_mul = value.value if isinstance(value, Node) else value
+        def _backward():
+            self.grad += parent.grad
+            other.grad += parent.grad
 
-        return Node(
-            value=self.value * to_mul,
-            operation="*",
+        parent._backward = _backward
+
+        return parent
+
+    def __mul__(self, other: Node | int | float):
+        other = other if isinstance(other, Node) else Node(other)
+
+        parent = Node(
+            value=self.value * other.value,
+            children=(self, other),
+            op="*",
         )
+
+        def _backward():
+            self.grad += parent.grad * other.value
+            other.grad += parent.grad * self.value
+
+        parent._backward = _backward
+
+        return parent
 
     def __pow__(self, number: int | float):
-        return Node(
+        if not isinstance(number, (int, float)):
+            raise ValueError("Only int or float are supported for power")
+
+        parent = Node(
             value=self.value**number,
-            operation="**",
+            children=(self,),
+            op=f"**{number}",
         )
+
+        def _backward():
+            self.grad += (number * self.value ** (number - 1)) * parent.grad
+
+        parent._backward = _backward
+
+        return parent
 
     def __neg__(self):
         return self * -1
@@ -59,5 +105,33 @@ class Node:
     def relu(self):
         return Node(
             value=0 if self.value < 0 else self.value,
-            operation="ReLU",
+            op="ReLU",
         )
+
+    def backward(self):
+        nodes = []
+        seen = set()
+
+        # Defining post_order_dfs() inside the backward() function so that
+        # references to `nodes` and `seen` are kept for all child nodes calling
+        # post_order_dfs().
+        def post_order_dfs(node: Node):
+            if node not in seen:
+                seen.add(node)
+
+                for child in node.children:
+                    post_order_dfs(child)
+
+                # Post-order depth-first search: Adding self to the list of
+                # nodes only after all child nodes have been visited. This is a
+                # requirement for backpropagation.
+                nodes.append(node)
+
+        post_order_dfs(self)
+
+        self.grad = 1
+
+        # Starting at the parent, work backward and apply the chain rule,
+        # propagating local derivatives.
+        for node in reversed(nodes):
+            node._backward()
