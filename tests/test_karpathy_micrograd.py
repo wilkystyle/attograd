@@ -6,6 +6,7 @@ def test_karpathy_micrograd_readme():
 
     See https://github.com/karpathy/micrograd/blob/c911406e5ace8742e5841a7e0df113ecb5d54685/README.md#example-usage
     """
+
     a = Node(-4.0)
     b = Node(2.0)
 
