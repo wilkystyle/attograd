@@ -1,4 +1,4 @@
-from attograd import Node
+from attograd import Scalar
 
 
 def test_karpathy_micrograd_readme():
@@ -7,8 +7,8 @@ def test_karpathy_micrograd_readme():
     See https://github.com/karpathy/micrograd/blob/c911406e5ace8742e5841a7e0df113ecb5d54685/README.md#example-usage
     """
 
-    a = Node(-4.0)
-    b = Node(2.0)
+    a = Scalar(-4.0)
+    b = Scalar(2.0)
 
     c = a + b
     d = a * b + b**3

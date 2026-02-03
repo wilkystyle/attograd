@@ -3,9 +3,9 @@ from __future__ import annotations
 from typing import Callable
 
 
-class Node:
+class Scalar:
     value: int | float
-    children: set[Node]
+    children: set[Scalar]
     op: str | None
     grad: float
     _backward: Callable
@@ -13,7 +13,7 @@ class Node:
     def __init__(
         self,
         value: int | float,
-        children: tuple[Node, ...] = (),
+        children: tuple[Scalar, ...] = (),
         op: str | None = None,
     ):
         self.value = value
@@ -25,15 +25,15 @@ class Node:
 
     def __str__(self):
         op_string = f", op={self.op}" if self.op else ""
-        return f"<Node: value={self.value}{op_string}>"
+        return f"<Scalar: value={self.value}{op_string}>"
 
     def __repr__(self):
         return str(self)
 
-    def __add__(self, other: Node | int | float):
-        other = other if isinstance(other, Node) else Node(other)
+    def __add__(self, other: Scalar | int | float):
+        other = other if isinstance(other, Scalar) else Scalar(other)
 
-        parent = Node(
+        parent = Scalar(
             value=self.value + other.value,
             children=(self, other),
             op="+",
@@ -47,10 +47,10 @@ class Node:
 
         return parent
 
-    def __mul__(self, other: Node | int | float):
-        other = other if isinstance(other, Node) else Node(other)
+    def __mul__(self, other: Scalar | int | float):
+        other = other if isinstance(other, Scalar) else Scalar(other)
 
-        parent = Node(
+        parent = Scalar(
             value=self.value * other.value,
             children=(self, other),
             op="*",
@@ -68,7 +68,7 @@ class Node:
         if not isinstance(number, (int, float)):
             raise ValueError("Only int or float are supported for power")
 
-        parent = Node(
+        parent = Scalar(
             value=self.value**number,
             children=(self,),
             op=f"**{number}",
@@ -84,7 +84,7 @@ class Node:
     def __neg__(self):
         return self * -1
 
-    def __sub__(self, value: Node | int | float):
+    def __sub__(self, value: Scalar | int | float):
         return self + (-value)
 
     def __radd__(self, value):
@@ -103,7 +103,7 @@ class Node:
         return value * self**-1
 
     def relu(self):
-        parent = Node(
+        parent = Scalar(
             value=0 if self.value < 0 else self.value,
             children=(self,),
             op="ReLU",
@@ -122,7 +122,7 @@ class Node:
         # Defining post_order_dfs() inside the backward() function so that
         # references to `nodes` and `seen` are kept for all child nodes calling
         # post_order_dfs().
-        def post_order_dfs(node: Node):
+        def post_order_dfs(node: Scalar):
             if node not in seen:
                 seen.add(node)
 
