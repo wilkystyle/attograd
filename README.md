@@ -22,6 +22,29 @@ uv venv -cp 3.12  # Or your desired Python version
 uv sync --frozen
 ```
 
-## Development
-- Add new packages with `uv add PACKAGE-NAME`
-- Update the lockfile with `uv lock`
+## Usage
+
+```python
+x = Tensor(
+    [
+        [1.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0],
+        [0.0, 0.0, 1.0],
+    ],
+    dtype=np.float32,
+)
+
+y = Tensor(
+    [
+        [2.0, 0.0, -2.0],
+    ],
+    dtype=np.float32,
+)
+
+z = y.dot(x).sum()
+
+z.backward()
+
+print(x.grad)  # dz/dx
+print(y.grad)  # dz/dy
+```
