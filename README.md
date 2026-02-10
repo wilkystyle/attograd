@@ -25,6 +25,10 @@ uv sync --frozen
 ## Usage
 
 ```python
+import numpy as np
+
+from attograd import Tensor
+
 x = Tensor(
     [
         [1.0, 0.0, 0.0],
