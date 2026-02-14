@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Any, Callable
 
 import numpy as np
@@ -105,3 +107,9 @@ class Tensor:
         # propagating local derivatives.
         for tensor in reversed(tensors):
             tensor._backward()
+
+    @staticmethod
+    def random_uniform(rows, columns, rng: np.random.Generator | None = None) -> Tensor:
+        if rng is None:
+            rng = np.random.default_rng()
+        return Tensor(values=rng.uniform(low=-1.0, high=1.0, size=(rows, columns)))
