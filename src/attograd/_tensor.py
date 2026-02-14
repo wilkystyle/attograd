@@ -26,6 +26,12 @@ class Tensor:
     def __hash__(self):
         return id(self)
 
+    def __str__(self):
+        return f"<Tensor {self.values.shape}>"
+
+    def __repr__(self):
+        return self.__str__()
+
     def zero_grad(self):
         self.grad = np.zeros_like(self.values)
 
